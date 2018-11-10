@@ -1,25 +1,37 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from "react";
+import "./App.css";
+
+function loadCats() {
+  return Promise.resolve({ Items: [{ catID: "1", name: "Gato" }] });
+}
 
 class App extends Component {
+  constructor(props) {
+    super(props);
+    this.state = { loading: true, cats: { Items: [] } };
+  }
+
+  componentDidMount() {
+    loadCats().then(cats => {
+      this.setState({ loading: false, cats });
+    });
+  }
+
   render() {
+    const { loading, cats } = this.state;
+
     return (
       <div className="App">
         <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
+          <h1>Hello Cats!</h1>
         </header>
+        <ul>
+          {loading ? (
+            <li>Loading cats...</li>
+          ) : (
+            cats.Items.map(cat => <li>{cat.name}</li>)
+          )}
+        </ul>
       </div>
     );
   }
