@@ -10,7 +10,7 @@
   "author": "Brian LeRoux <b@brian.io>",
   "license": "Apache-2.0",
   "dependencies": {
-    "@architect/architect": "^4.2.0",
+    "@architect/architect": "^4.2.1",
     "@architect/data": "^2.0.8"
   }
 }
