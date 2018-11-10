@@ -12,9 +12,12 @@ async function loadCats() {
 
 async function createCat(name) {
   let url = "/api/cats";
-  let result = await fetch(url, { method: "POST", body: JSON.stringify({catID: '' + Math.random(), name: name})});
-  let json = await loadCats()
-  return json
+  let result = await fetch(url, {
+    method: "POST",
+    body: JSON.stringify({ catID: "" + Math.random(), name: name })
+  });
+  let json = await loadCats();
+  return json;
 }
 
 class App extends Component {
@@ -31,9 +34,9 @@ class App extends Component {
 
   handleCreateCat = e => {
     e.preventDefault();
-    createCat(this.state.name).then((cats) = >{
-      this.setState({cats})
-    })
+    createCat(this.state.name).then(cats => {
+      this.setState({ cats });
+    });
   };
 
   handleChange = e => {
