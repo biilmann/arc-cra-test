@@ -1,8 +1,13 @@
 import React, { Component } from "react";
 import "./App.css";
 
-function loadCats() {
-  return Promise.resolve({ Items: [{ catID: "1", name: "Gato" }] });
+async function loadCats() {
+  let url = '/api/cats'
+  let result = await fetch(url, {cors:'cors'}) 
+  let json = await result.json()
+  console.log('GET THEM CATTTTTS', json)
+  return json
+  //return Promise.resolve({ Items: [{ catID: "1", name: "Gato" }] });
 }
 
 class App extends Component {
