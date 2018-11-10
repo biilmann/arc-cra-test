@@ -1,6 +1,38 @@
 const path = require("path");
 const fs = require("fs");
 
+function ensureDirectoryExists(filePath) {
+  const dirname = path.dirname(filePath);
+  if (fs.existsSync(dirname)) {
+    return true;
+  }
+  ensureDirectoryExists(dirname);
+  fs.mkdirSync(dirname);
+}
+
+/* Returns string of path to aws file */
+const getAWSCredentialsPath = () => {
+  const { env } = process;
+  const home =
+    env.HOME ||
+    env.USERPROFILE ||
+    (env.HOMEPATH ? (env.HOMEDRIVE || "C:/") + env.HOMEPATH : null);
+  if (!home) {
+    throw new Error("Can't find home directory on your local file system.");
+  }
+  return path.join(home, ".aws", "credentials");
+};
+
+/* Returns string of contents of aws crendentials file */
+const getAWSCredentialsFile = () => {
+  const credentialsPath = getAWSCredentialsPath();
+  try {
+    return fs.readFileSync(credentialsPath).toString();
+  } catch (err) {
+    return false;
+  }
+};
+
 const appendAWSCredentials = ({
   profile,
   awsAccessKeyId,
