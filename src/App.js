@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import "./App.css";
-import { __await } from "tslib";
 
 async function loadCats() {
   let url = "/api/cats";
@@ -12,7 +11,7 @@ async function loadCats() {
 
 async function createCat(name) {
   let url = "/api/cats";
-  let result = await fetch(url, {
+  await fetch(url, {
     method: "POST",
     body: JSON.stringify({ catID: "" + Math.random(), name: name })
   });
