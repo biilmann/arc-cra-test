@@ -1,19 +1,26 @@
 import React, { Component } from "react";
 import "./App.css";
+import { __await } from "tslib";
 
 async function loadCats() {
-  let url = '/api/cats'
-  let result = await fetch(url, {cors:'cors'}) 
-  let json = await result.json()
-  console.log('GET THEM CATTTTTS', json)
+  let url = "/api/cats";
+  let result = await fetch(url);
+  let json = await result.json();
+  console.log("GET THEM CATTTTTS", json);
+  return json;
+}
+
+async function createCat(name) {
+  let url = "/api/cats";
+  let result = await fetch(url, { method: "POST", body: JSON.stringify({catID: '' + Math.random(), name: name})});
+  let json = await loadCats()
   return json
-  //return Promise.resolve({ Items: [{ catID: "1", name: "Gato" }] });
 }
 
 class App extends Component {
   constructor(props) {
     super(props);
-    this.state = { loading: true, cats: { Items: [] } };
+    this.state = { loading: true, cats: { Items: [] }, name: "" };
   }
 
   componentDidMount() {
@@ -22,8 +29,19 @@ class App extends Component {
     });
   }
 
+  handleCreateCat = e => {
+    e.preventDefault();
+    createCat(this.state.name).then((cats) = >{
+      this.setState({cats})
+    })
+  };
+
+  handleChange = e => {
+    this.setState({ [e.target.name]: e.target.value });
+  };
+
   render() {
-    const { loading, cats } = this.state;
+    const { loading, cats, name } = this.state;
 
     return (
       <div className="App">
@@ -37,6 +55,17 @@ class App extends Component {
             cats.Items.map(cat => <li>{cat.name}</li>)
           )}
         </ul>
+        <form onSubmit={this.handleCreateCat}>
+          <p>
+            <label>
+              Cat Name:{" "}
+              <input name="name" value={name} onChange={this.handleChange} />
+            </label>
+          </p>
+          <p>
+            <button>Add Cat</button>
+          </p>
+        </form>
       </div>
     );
   }
